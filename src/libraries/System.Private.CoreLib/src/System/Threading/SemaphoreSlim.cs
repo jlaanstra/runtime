@@ -308,7 +308,7 @@ namespace System.Threading
             }
 
             bool waitSuccessful = false;
-            Task<bool>? asyncWaitTask = null;
+            ConfiguredTaskAwaitable<bool>? asyncWaitTask = null;
             bool lockTaken = false;
 
             // Register for cancellation outside of the main lock.
@@ -347,7 +347,7 @@ namespace System.Threading
                 if (m_asyncHead is not null)
                 {
                     Debug.Assert(m_asyncTail is not null, "tail should not be null if head isn't");
-                    asyncWaitTask = WaitAsync(millisecondsTimeout, cancellationToken);
+                    asyncWaitTask = WaitAsync(millisecondsTimeout, cancellationToken).ConfigureAwait(false);
                 }
                 // There are no async waiters, so we can proceed with normal synchronous waiting.
                 else
